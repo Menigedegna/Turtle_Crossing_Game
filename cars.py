@@ -3,11 +3,10 @@ from random import randint
 
 MAX_CAR_LENGTH = 100
 MIN_CAR_LENGTH = 20
-MOVING_DISTANCE = 10
 
 
 class Car(Turtle):
-    """ball for game, is constantly moving and bounces off paddles and horizontal borders"""
+    """cars, constantly moving from right to left border"""
     def __init__(self, car_height):
         super().__init__()
         self.shape("square")
@@ -17,8 +16,8 @@ class Car(Turtle):
         self.color(random_color(), "")
         self.penup()
 
-    def move_car(self):
-        self.backward(MOVING_DISTANCE)
+    def move_car(self, car_pace):
+        self.backward(car_pace)
 
 
 def random_color():
