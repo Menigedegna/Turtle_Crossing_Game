@@ -2,13 +2,14 @@ from turtle import Screen, Turtle
 from cars import Car
 from random import randint
 import time
-from crossing_turtle import MainCharacter
+from player import Player
+from score_board import ScoreBoard
 
 # screen variables
 SCREEN_WIDTH = 800
 SCREEN_HEIGHT = 600
 SCREEN_BG_COLOR = "black"
-MARGIN = 30
+MARGIN = 60
 
 # car variables
 CAR_LANE_NUMBER = 20
@@ -20,10 +21,10 @@ CAR_TURTLE_PROXIMITY_MAX = 20
 
 # variables for game status display
 STATUS_BG_COLOR = "black"
-STATUS_TXT_COLOR = "white"
 STATUS_FONT = ("Times New Roman", 15, "normal")
 STATUS_ALERT_WIDTH = 100
 STATUS_ALERT_HEIGHT = 100
+GAME_ALERT = (255, 193, 37)
 
 
 class CrossingGame:
@@ -42,8 +43,11 @@ class CrossingGame:
         self.x_min = -1 * round(SCREEN_WIDTH/2) + MARGIN
         self.x_max = -1 * self.x_min
 
+        '''create a score board'''
+        self.score_board = ScoreBoard(screen=self.screen, score_position=(self.x_min, self.y_max+(MARGIN/2)))
+
         '''create turtle'''
-        self.crossing_turtle = MainCharacter(screen=self.screen, y_position=self.y_min - MARGIN)
+        self.crossing_turtle = Player(screen=self.screen, y_position=self.y_min - (MARGIN/2))
         self.screen.update()
 
         '''create cars'''
@@ -60,19 +64,17 @@ class CrossingGame:
         self.game_is_on = True
         # keep track of car pace
         self.car_pace = CAR_MIN_PACE
-        # keep track of game rounds
-        self.round = 1
 
     def display_status(self, text):
         """display status of the game: game is on, reset game or game over"""
         self.status.color(STATUS_BG_COLOR)
         self.status.stamp()
-        self.status.color(STATUS_TXT_COLOR)
+        self.status.color(GAME_ALERT)
         self.status.write(f"{text}", align="center", font=STATUS_FONT)
 
     def start_game(self):
         self.screen.update()
-        time.sleep(0.06)
+        time.sleep(0.1)
         self.crossing_turtle.move_mc()
         for car in self.cars:
             car.move_car(car_pace=self.car_pace)
@@ -88,18 +90,21 @@ class CrossingGame:
                 # reset turtle position
                 self.crossing_turtle.reset_mc()
                 # display rounds
-                self.round += 1
-                self.display_status(f"Round: {self.round}")
+                # update score
+                self.score_board.add_score()
+                self.display_status(f"Level: {self.score_board.score}")
                 self.screen.update()
                 time.sleep(1)
                 self.status.clear()
                 self.screen.update()
+
 
             '''if collision with car => game over'''
             distance_from_cars = [self.crossing_turtle.distance(car) for car in self.cars]
             if min(distance_from_cars) <= CAR_TURTLE_PROXIMITY_MAX:
                 self.display_status("GAME OVER")
                 self.game_is_on = False
+                self.score_board.reset_score()
 
     def set_game(self):
         # position crossing turtle

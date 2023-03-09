@@ -12,7 +12,7 @@ class Car(Turtle):
         self.shape("square")
         self.car_height = car_height
         self.car_length = randint(MIN_CAR_LENGTH, MAX_CAR_LENGTH)
-        self.shapesize(stretch_len=self.car_length / 20, stretch_wid=self.car_height/20)
+        self.shapesize(stretch_len=self.car_length / 20, stretch_wid=self.car_height/20, outline=4)
         self.color(random_color(), "")
         self.penup()
 

@@ -1,15 +1,16 @@
 from turtle import Turtle
 
-MOVING_DISTANCE = 10
+MOVING_DISTANCE = 20
 
 
-class MainCharacter(Turtle):
+class Player(Turtle):
     """create turtle object, user can interact with turtle to make it move up"""
     def __init__(self, screen, y_position):
         super().__init__()
         self.screen = screen
         self.shape("turtle")
-        self.color("pink")
+        self.shapesize(outline=3)
+        self.color((255, 97, 3), (34,139,34))
         self.penup()
         self.setheading(90)
         self.y_position = y_position
