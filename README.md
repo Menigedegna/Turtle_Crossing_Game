@@ -7,7 +7,7 @@
         <td>
             <p>
                 Turtle crossing game using python's module turtle
-                <br>Rum main.py and ...
+                <br>Few instructions ...
                 <ul><li>To move the turtle Up to cross the street with moving cars, press the **Up** keypad</li></ul>
             </p>
         </td>
